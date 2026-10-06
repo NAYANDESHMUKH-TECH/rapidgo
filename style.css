@@ -1,0 +1,277 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #ffffff;
+    color: #171717;
+}
+
+
+/* ================= NAVBAR ================= */
+
+.navbar {
+    height: 102px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 13%;
+
+    gap: 50px;
+
+    border-bottom: 1px solid #eeeeee;
+}
+
+
+/* Logo */
+
+.logo {
+    background: #ffd21c;
+
+    padding: 12px 24px;
+
+    border-radius: 30px;
+
+    font-size: 28px;
+    font-weight: bold;
+
+    color: #111111;
+
+    margin-right: auto;
+}
+
+
+/* Navigation */
+
+nav {
+    display: flex;
+    align-items: center;
+
+    gap: 38px;
+}
+
+nav a {
+    position: relative;
+
+    text-decoration: none;
+
+    color: #222222;
+
+    font-size: 15px;
+}
+
+nav a:hover {
+    color: #000000;
+}
+
+
+/* Active navigation */
+
+nav a.active::after {
+    content: "";
+
+    position: absolute;
+
+    left: 0;
+    right: 0;
+
+    bottom: -25px;
+
+    height: 4px;
+
+    background: #111111;
+
+    border-radius: 5px;
+}
+
+
+/* Download button */
+
+.download-btn {
+    background: #000000;
+
+    color: #ffffff;
+
+    border: none;
+
+    padding: 14px 25px;
+
+    border-radius: 30px;
+
+    font-size: 15px;
+
+    font-weight: bold;
+
+    cursor: pointer;
+}
+
+.download-btn:hover {
+    background: #222222;
+}
+
+
+/* ================= SERVICES ================= */
+
+.services-section {
+    max-width: 1170px;
+
+    margin: 85px auto;
+
+    padding: 0 20px;
+}
+
+
+/* Heading */
+
+.services-section h1 {
+    font-size: 48px;
+
+    font-weight: 700;
+
+    margin-bottom: 16px;
+}
+
+
+/* Yellow underline */
+
+.underline {
+    width: 128px;
+
+    height: 4px;
+
+    background: #ffc800;
+
+    margin-bottom: 35px;
+}
+
+
+/* Services grid */
+
+.services-grid {
+    display: grid;
+
+    grid-template-columns: repeat(3, 1fr);
+
+    gap: 44px;
+}
+
+
+/* Service card */
+
+.service-card {
+    height: 145px;
+
+    background: #f5f6f8;
+
+    border-radius: 12px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 20px 20px 20px 19px;
+
+    overflow: hidden;
+
+    transition: transform 0.2s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-4px);
+}
+
+
+/* Text */
+
+.service-info {
+    max-width: 210px;
+}
+
+.service-info h2 {
+    font-size: 22px;
+
+    margin-bottom: 7px;
+}
+
+.service-info p {
+    color: #7d8490;
+
+    font-size: 15px;
+
+    line-height: 1.4;
+}
+
+
+/* Images */
+
+.service-card img {
+    width: 125px;
+
+    height: 110px;
+
+    object-fit: contain;
+}
+
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 1000px) {
+
+    .navbar {
+        padding: 0 5%;
+    }
+
+    nav {
+        gap: 18px;
+    }
+
+    .services-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+}
+
+
+@media (max-width: 700px) {
+
+    .navbar {
+        height: auto;
+
+        padding: 20px;
+
+        flex-wrap: wrap;
+    }
+
+    nav {
+        order: 3;
+
+        width: 100%;
+
+        justify-content: center;
+
+        flex-wrap: wrap;
+    }
+
+    nav a.active::after {
+        display: none;
+    }
+
+    .services-section {
+        margin: 50px auto;
+    }
+
+    .services-section h1 {
+        font-size: 38px;
+    }
+
+    .services-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
