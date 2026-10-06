@@ -1,0 +1,93 @@
+AWSTemplateFormatVersion: '2010-09-09'
+
+Description: Deploy Rapid-Go static website using Docker on Amazon EC2
+
+Parameters:
+
+  VpcId:
+    Type: AWS::EC2::VPC::Id
+    Default: vpc-00453430500e26c37
+    Description: Existing VPC for the Rapid-Go EC2 instance
+
+  SubnetId:
+    Type: AWS::EC2::Subnet::Id
+    Default: subnet-0e04bb1eef6010fca
+    Description: Public subnet for the Rapid-Go EC2 instance
+
+
+Resources:
+
+  RapidGoSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+
+    Properties:
+      GroupDescription: Allow HTTP traffic to Rapid-Go website
+
+      VpcId: !Ref VpcId
+
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+
+      Tags:
+        - Key: Name
+          Value: RapidGo-SecurityGroup
+
+
+  RapidGoEC2:
+    Type: AWS::EC2::Instance
+
+    Properties:
+
+      InstanceType: t3.micro
+
+      ImageId: '{{resolve:ssm:/aws/service/ami-amazon-linux-latest/al2023-ami-kernel-default-x86_64}}'
+
+      SubnetId: !Ref SubnetId
+
+      SecurityGroupIds:
+        - !Ref RapidGoSecurityGroup
+
+      Tags:
+        - Key: Name
+          Value: RapidGo-Docker-Server
+
+      UserData:
+        Fn::Base64: |
+          #!/bin/bash
+
+          # Update packages
+          dnf update -y
+
+          # Install Docker
+          dnf install -y docker
+
+          # Start Docker
+          systemctl enable docker
+          systemctl start docker
+
+          # Pull Rapid-Go image from Docker Hub
+          docker pull erdocker2/rapidgo:v1
+
+          # Run Rapid-Go container
+          docker run -d \
+            --name rapidgo-container \
+            -p 80:80 \
+            erdocker2/rapidgo:v1
+
+
+Outputs:
+
+  WebsiteURL:
+    Description: Rapid-Go website URL
+    Value: !Sub 'http://${RapidGoEC2.PublicIp}'
+
+  PublicIP:
+    Description: Public IP address of the EC2 instance
+    Value: !GetAtt RapidGoEC2.PublicIp
+
+  InstanceId:
+    Description: EC2 instance ID
+    Value: !Ref RapidGoEC2
